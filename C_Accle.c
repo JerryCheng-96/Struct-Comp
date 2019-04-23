@@ -10,6 +10,7 @@
 #include <numpy/arrayobject.h>
 
 #define MIN(A, B) (A) < (B) ? (A) : (B)
+#define ZSCORE(VAL, AVGVAL, STDVAL) ((VAL) - (AVGVAL)) / (STDVAL)
 
 // Definition: Accessing the data at a certain position...
 #define PTR_DOUBLE_ELEM_3(PDATA, STRD, I, J, K)     (double*)((PDATA) + (I) * (STRD)[0] + (J) * (STRD)[1] + (K) * STRD[2])
@@ -108,6 +109,18 @@ PyObject* VTR_SUBTRACT_3D(char* pVtr1, int strd1, char* pVtr2, int strd2) {
     *(double*)(pResVtr + 2 * np_strides[1]) = *(double*)((pVtr1) + (strd1) * 2) - *(double*)((pVtr2) + (strd2) * 2);
     
     return resVtr;
+}
+
+double avg(double* theData, int len) {
+    double sum = 0.0;
+    for (int i = 0; i < len; i++) sum += theData[i];
+    return sum / len;
+}
+
+double stddev(double* theData, double avgVal, int len) {
+    double sum = 0.0;
+    for (int i = 0; i < len; i++) sum += pow((theData[i] - avgVal), 2);
+    return sqrt(sum / len);
 }
 
 

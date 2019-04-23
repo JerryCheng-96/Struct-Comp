@@ -7,3 +7,7 @@ build/*
 .idea/*
 venv/*
 pdbs/*
+test_pdbs/*
+*tmalign_res
+out_pdbs/*
+*.png

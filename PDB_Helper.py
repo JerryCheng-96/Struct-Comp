@@ -60,13 +60,16 @@ class Chain:
         listNVtr = [self.residues[1].atoms['N'].vector - self.residues[0].atoms['N'].vector]
 
         for i in range(1, len(self.residues) - 1):
-            vtr_NC = self.residues[i].atoms['N'].vector - self.residues[i - 1].atoms['C'].vector
-            vtr_NCa = self.residues[i].atoms['N'].vector - self.residues[i].atoms['CA'].vector
-            norm_vtr = np.cross(vtr_NC, vtr_NCa)
-            norm_vtr = norm_vtr / Len_Vtr(norm_vtr)
-            axis, angle = SolveFor_rot(norm_vtr, np.array([0,0,1]))
-            oriNVtr = self.residues[i].atoms['N'].vector - self.residues[i + 1].atoms['N'].vector
-            listNVtr.append(Rodrigues_rot(oriNVtr, axis, angle))
+            try:
+                vtr_NC = self.residues[i].atoms['N'].vector - self.residues[i - 1].atoms['C'].vector
+                vtr_NCa = self.residues[i].atoms['N'].vector - self.residues[i].atoms['CA'].vector
+                norm_vtr = np.cross(vtr_NC, vtr_NCa)
+                norm_vtr = norm_vtr / Len_Vtr(norm_vtr)
+                axis, angle = SolveFor_rot(norm_vtr, np.array([0,0,1]))
+                oriNVtr = self.residues[i].atoms['N'].vector - self.residues[i + 1].atoms['N'].vector
+                listNVtr.append(Rodrigues_rot(oriNVtr, axis, angle))
+            except KeyError as e:
+                print("Key error at #" + str(i))
 
         listNVtr.append(np.array([0,0,0]))
         return listNVtr
@@ -175,11 +178,11 @@ def ReadPDBAsAtomsList(filename):
         theAtom = []
         theAtom.append(line[:4])
         theAtom.append(line[4:11].strip())
-        theAtom.append(line[11:17].strip())
+        theAtom.append(line[11:16].strip())
         theAtom.append(line[17:20].strip())
         theAtom.append(line[20:22].strip())
         theAtom.append(line[22:26].strip())
-        theAtom.append(line[26:38].strip())
+        theAtom.append(line[30:38].strip())
         theAtom.append(line[38:46].strip())
         theAtom.append(line[46:54].strip())
         theAtom.append(line[54:60].strip())
@@ -216,7 +219,8 @@ def SavePDBFile(filename, chainList):
 
 
 def GetChain(pdbAtomsList, chainId):
-    atomsList = [atom for atom in pdbAtomsList if atom[4] == chainId]
+    #atomsList = [atom for atom in pdbAtomsList if atom[4] == chainId]
+    atomsList = [atom for atom in pdbAtomsList]
     pdbAminoDict = {}
 
     for atom in atomsList:

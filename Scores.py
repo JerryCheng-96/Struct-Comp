@@ -28,6 +28,20 @@ def TMscoreAligned(resis_mod_aligned, resis_nat_aligned, len_nat):
 
     ## Calculating TMscore
     tmScore = np.sum(1 / (pow(di / d0, 2) + 1)) / len_nat
-    print(tmScore)
+    print("TM-score = " + str(tmScore))
+
+    len_mod = len(resis_mod_aligned)
+    print("lenmod=" + str(len_mod))
+    # Calculating TMscore
+    ## Calculating d0
+    d0 = 1.24 * pow(len_mod - 15, 1/3) - 1.8
+
+    ## Calculating di's
+    di = np.sqrt(np.sum(pow(points_mod - points_nat, 2), axis=1))
+    di = di[int(len(di)/3) - 1: 2 * int(len(di)/3) - 1]
+
+    ## Calculating TMscore
+    tmScore = np.sum(1 / (pow(di / d0, 2) + 1)) / len_mod
+    print("TM-score = " + str(tmScore))
 
     return rotMat, transVtr, points_mod, points_nat
