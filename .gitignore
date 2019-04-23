@@ -1,0 +1,9 @@
+.vscode/
+.ipynb_checkpoints/
+*.pdf
+*/cmake-build-debug/
+__pycache__/
+build/*
+.idea/*
+venv/*
+pdbs/*
