@@ -41,5 +41,5 @@ if __name__ == "__main__":
         for atom in residue.atoms.values():
             transAtomList.append(atom.transform(rotMat.T, transVtr).infoList)
 
-    theSaveFilename = re.findall(r"([^/]*).pdb$", sys.argv[1])[0]
+    theSaveFilename = re.findall(r"([^/]*).pdb$", sys.argv[1])[0] + "_2_" + re.findall(r"([^/]*).pdb$", sys.argv[2])[0]
     ph.SavePDBFile('out_pdbs/' + theSaveFilename + "_rotated.pdb", [ph.GetChain(transAtomList, 'A')])

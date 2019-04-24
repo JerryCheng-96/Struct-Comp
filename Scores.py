@@ -31,7 +31,7 @@ def TMscoreAligned(resis_mod_aligned, resis_nat_aligned, len_nat):
     print("TM-score = " + str(tmScore))
 
     len_mod = len(resis_mod_aligned)
-    print("lenmod=" + str(len_mod))
+
     # Calculating TMscore
     ## Calculating d0
     d0 = 1.24 * pow(len_mod - 15, 1/3) - 1.8
